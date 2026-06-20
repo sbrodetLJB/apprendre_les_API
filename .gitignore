@@ -2,3 +2,7 @@ venv/
 __pycache__/
 *.pyc
 *.log
+
+# client-maui (.NET)
+bin/
+obj/

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CarnetAdresses.Maui.Pages.ContactFormPage">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="20" Spacing="14">
+
+            <Label Text="Prénom" />
+            <Entry x:Name="FirstNameEntry" />
+
+            <Label Text="Nom" />
+            <Entry x:Name="LastNameEntry" />
+
+            <Label Text="Email" />
+            <Entry x:Name="EmailEntry" Keyboard="Email" />
+
+            <Label Text="Téléphone (optionnel)" />
+            <Entry x:Name="PhoneEntry" Keyboard="Telephone" />
+
+            <Label x:Name="ErrorLabel" TextColor="Red" IsVisible="False" />
+
+            <Button x:Name="SaveButton" Text="Enregistrer" Clicked="OnSaveClicked" />
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

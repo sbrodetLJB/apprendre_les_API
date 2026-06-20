@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:models="clr-namespace:CarnetAdresses.Maui.Models"
+             x:Class="CarnetAdresses.Maui.MainPage"
+             Title="Carnet d'adresses">
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem Text="Ajouter" Clicked="OnAddClicked" />
+    </ContentPage.ToolbarItems>
+
+    <Grid Padding="16" RowDefinitions="Auto,Auto,Auto,*,Auto" RowSpacing="12">
+
+        <Label Grid.Row="0"
+               Text="Ce client lourd / mobile parle indifféremment à l'une ou l'autre des deux API — même contrat qu'avec client-web/."
+               FontSize="13" TextColor="Gray" />
+
+        <Picker Grid.Row="1" x:Name="ApiPicker" Title="API utilisée" SelectedIndexChanged="OnApiChanged" />
+
+        <SearchBar Grid.Row="2" x:Name="SearchBarControl" Placeholder="Rechercher (prénom, nom, email)"
+                   SearchButtonPressed="OnSearchPressed" />
+
+        <RefreshView Grid.Row="3" x:Name="RefreshViewControl" Refreshing="OnRefreshing">
+            <CollectionView x:Name="ContactsList" SelectionMode="None">
+                <CollectionView.EmptyView>
+                    <Label Text="Aucun contact pour le moment." HorizontalOptions="Center" VerticalOptions="Center" />
+                </CollectionView.EmptyView>
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="models:AddressBookContact">
+                        <Grid Padding="0,8" ColumnDefinitions="*,Auto,Auto" ColumnSpacing="8">
+                            <VerticalStackLayout Grid.Column="0" VerticalOptions="Center">
+                                <Label Text="{Binding DisplayName}" FontAttributes="Bold" />
+                                <Label Text="{Binding DisplaySubtitle}" FontSize="13" TextColor="Gray" />
+                            </VerticalStackLayout>
+                            <Button Grid.Column="1" Text="Modifier"
+                                    Clicked="OnEditClicked" CommandParameter="{Binding}" />
+                            <Button Grid.Column="2" Text="Supprimer"
+                                    Clicked="OnDeleteClicked" CommandParameter="{Binding}" />
+                        </Grid>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+        </RefreshView>
+
+        <Label Grid.Row="4" x:Name="ErrorLabel" TextColor="Red" IsVisible="False" />
+
+    </Grid>
+
+</ContentPage>

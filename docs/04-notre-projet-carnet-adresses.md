@@ -9,15 +9,16 @@ Construire un petit carnet d'adresses (une liste de contacts), **deux fois**, av
 
 Les deux respectent **exactement le même contrat** (voir la leçon précédente), et stockent leurs données dans un simple fichier JSON sur le disque (pas besoin d'installer une base de données pour suivre ce cours).
 
-Un seul client web (`client-web/`), en HTML/JavaScript, vient ensuite consommer l'une ou l'autre de ces API — vous changerez une seule ligne de configuration pour basculer de l'une à l'autre, et tout continuera de fonctionner.
+Un client web (`client-web/`), en HTML/JavaScript, et un client lourd/mobile (`client-maui/`, en .NET MAUI — voir la leçon 7) viennent ensuite consommer l'une ou l'autre de ces API — vous changerez une seule ligne (ou un menu déroulant) de configuration pour basculer de l'une à l'autre, et tout continuera de fonctionner, quel que soit le client.
 
 ```
-client-web/  (HTML + JS, dans votre navigateur)
+client-web/   (HTML + JS, dans votre navigateur)
+client-maui/  (.NET MAUI : app Windows ou Android)
       |
-      |  requêtes HTTP (fetch)
+      |  requêtes HTTP
       v
 api-fastapi/  (Python, port 8000)        <-- vous choisissez l'une des deux,
-   OU                                          le client ne change pas
+   OU                                          aucun client ne change
 api-php/      (PHP, port 8001)
 ```
 
@@ -49,5 +50,6 @@ Un contact a la forme suivante :
 2. Lisez ensuite `api-php/README.md`, lancez ce second service (sur un port différent), et testez-le avec les **mêmes** commandes `curl` — vous constaterez que les réponses ont la même forme.
 3. Comparez le code des deux services : même contrat, deux façons très différentes de l'implémenter.
 4. Lisez `client-web/README.md`, lancez le client, et utilisez-le avec l'une puis l'autre API.
+5. Une fois les leçons 5 et 6 vues, lisez `client-maui/README.md` (leçon 7) : le même contrat, consommé cette fois par une application Windows et une application Android, écrites en C#.
 
 **Suite : [5. Tester une API avec curl](05-tester-avec-curl.md)**

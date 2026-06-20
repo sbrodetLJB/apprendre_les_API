@@ -92,3 +92,5 @@ Le principe de ce dépôt (la même API réimplémentée dans plusieurs technolo
 ## API et bases de données réelles
 
 Ce cours utilise un simple fichier JSON pour rester accessible sans installation. Une vraie application utiliserait une base de données (MySQL, PostgreSQL, MongoDB...). Si ce sujet vous intéresse, regardez comment `ASSO_claude` utilise MySQL avec un ORM (TypeORM).
+
+**Suite : [7. Un client lourd et un client mobile, avec .NET MAUI](07-client-lourd-et-mobile-maui.md)**

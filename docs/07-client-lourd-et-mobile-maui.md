@@ -25,10 +25,22 @@ Comparez ce fichier à `client-web/app.js` : les mêmes cinq opérations (`GetCo
 Sur le client lourd (Windows) comme sur le client web (navigateur), `http://localhost:8000` désigne la machine qui exécute le client — la vôtre, là où tournent aussi `api-fastapi`/`api-php` pendant que vous suivez ce cours. **Un émulateur Android, lui, tourne dans sa propre machine virtuelle** : pour lui, `localhost` désignerait l'émulateur, pas votre machine. L'émulateur Android expose votre machine hôte à l'adresse spéciale `10.0.2.2` — c'est ce que `Services/ApiEndpoints.cs` utilise automatiquement selon la plateforme :
 
 ```csharp
-private static string Host => DeviceInfo.Platform == DevicePlatform.Android ? "10.0.2.2" : "localhost";
+private static string Host = DeviceInfo.Platform == DevicePlatform.Android ? "10.0.2.2" : "localhost";
 ```
 
 Sur un vrai téléphone Android (pas un émulateur), il faudrait remplacer cette adresse par l'adresse IP locale de votre machine sur le réseau Wi-Fi (ex. `192.168.1.42`) — un bon exercice si vous voulez aller plus loin.
+
+## Une deuxième difficulté propre au mobile : le trafic HTTP en clair
+
+Même une fois `localhost`/`10.0.2.2` réglé, une première tentative d'appel API depuis le client Android échoue avec une erreur de connexion (`HttpRequestException` côté C#, souvent affichée comme « connection failure »). La cause n'a rien à voir avec le réseau Wi-Fi ou l'émulateur : depuis Android 9 (API 28), le système **bloque par défaut tout trafic HTTP non chiffré** (« cleartext ») — seul HTTPS est autorisé sauf exception explicite. Comme `api-fastapi`/`api-php` tournent en `http://` (pas de certificat TLS, ce serait disproportionné pour ce cours), chaque requête est refusée avant même de quitter l'appareil.
+
+La solution, pour un projet de démo/cours qui ne parlera jamais qu'à des API locales en HTTP, est d'autoriser explicitement le cleartext dans `client-maui/Platforms/Android/AndroidManifest.xml` :
+
+```xml
+<application ... android:usesCleartextTraffic="true"></application>
+```
+
+**Ne faites jamais ça dans une vraie application distribuée** : ce réglage désactive une protection de sécurité (interception/modification du trafic par un tiers sur le réseau) pour **toutes** les requêtes HTTP de l'app, pas seulement vers `10.0.2.2`. Dans un projet réel, l'API doit être servie en HTTPS, et ce réglage doit rester absent (ou restreint à un domaine de test précis via une [configuration de sécurité réseau](https://developer.android.com/privacy-and-security/security-config) dédiée au build de debug).
 
 ## Lancer le projet
 

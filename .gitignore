@@ -6,3 +6,6 @@ __pycache__/
 # client-maui (.NET)
 bin/
 obj/
+.vs/
+*.csproj.user
+*.sln

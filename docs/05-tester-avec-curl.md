@@ -29,11 +29,13 @@ curl -i http://localhost:8000/contacts/999
 ```bash
 curl -X POST http://localhost:8000/contacts \
   -H "Content-Type: application/json" \
+  -H "x-api-key: demo-secret-key-123" \
   -d '{"firstName":"Marie","lastName":"Curie","email":"marie.curie@example.com"}'
 ```
 
 - `-X POST` : utilise la méthode `POST` au lieu de `GET`.
 - `-H "Content-Type: application/json"` : précise que le corps de la requête est du JSON.
+- `-H "x-api-key: ..."` : les écritures sont protégées par une clé API (voir [6. Pour aller plus loin](06-pour-aller-plus-loin.md)) ; sans elle, vous recevrez un `401`.
 - `-d '...'` : le corps de la requête (les données envoyées).
 
 La réponse contient le contact créé, avec son `id` généré par le serveur.
@@ -43,13 +45,14 @@ La réponse contient le contact créé, avec son `id` généré par le serveur.
 ```bash
 curl -X PUT http://localhost:8000/contacts/1 \
   -H "Content-Type: application/json" \
+  -H "x-api-key: demo-secret-key-123" \
   -d '{"firstName":"Marie","lastName":"Curie","email":"marie.curie@example.com","phone":"0600000000"}'
 ```
 
 ## Supprimer un contact (`DELETE`)
 
 ```bash
-curl -X DELETE http://localhost:8000/contacts/1
+curl -X DELETE http://localhost:8000/contacts/1 -H "x-api-key: demo-secret-key-123"
 ```
 
 Cette commande ne renvoie pas de contenu (code `204`).

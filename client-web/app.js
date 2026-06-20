@@ -25,6 +25,13 @@ function getApiBaseUrl() {
   return apiBaseUrlSelect.value;
 }
 
+// Clé API attendue par les deux implémentations (voir leçon 6, "Authentification")
+// pour les opérations d'écriture. ATTENTION pédagogique : une clé codée en dur
+// dans du JS exécuté côté navigateur est visible par n'importe qui (View Source,
+// outils de développement) — cela ne protège que les endpoints de démonstration
+// de ce cours, jamais une vraie application avec de vrais utilisateurs.
+const DEMO_API_KEY = 'demo-secret-key-123';
+
 // --- Affichage des erreurs ------------------------------------------------
 
 function showError(message) {
@@ -54,7 +61,7 @@ async function fetchContacts() {
 async function createContact(contact) {
   const response = await fetch(`${getApiBaseUrl()}/contacts`, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-api-key': DEMO_API_KEY },
     body: JSON.stringify(contact),
   });
   if (!response.ok) {
@@ -66,7 +73,7 @@ async function createContact(contact) {
 async function updateContact(id, contact) {
   const response = await fetch(`${getApiBaseUrl()}/contacts/${id}`, {
     method: 'PUT',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', 'x-api-key': DEMO_API_KEY },
     body: JSON.stringify(contact),
   });
   if (!response.ok) {
@@ -78,6 +85,7 @@ async function updateContact(id, contact) {
 async function deleteContact(id) {
   const response = await fetch(`${getApiBaseUrl()}/contacts/${id}`, {
     method: 'DELETE',
+    headers: { 'x-api-key': DEMO_API_KEY },
   });
   if (!response.ok) {
     throw new Error(`Erreur ${response.status} en supprimant le contact`);

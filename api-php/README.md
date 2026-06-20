@@ -23,9 +23,15 @@ Voir [`docs/05-tester-avec-curl.md`](../docs/05-tester-avec-curl.md) pour des ex
 
 ## Comment c'est fait
 
-- `index.php` contient tout : gestion CORS, lecture du corps de la requête, routage manuel (`if ($path === '/contacts' && $method === 'GET')`), validation manuelle des champs obligatoires, lecture/écriture de `contacts.json`.
+- `index.php` contient tout : gestion CORS, lecture du corps de la requête, routage manuel (`if ($path === '/contacts' && $method === 'GET')`), validation manuelle (`validateContactInput`), vérification de la clé API (`requireApiKey`), lecture/écriture de `contacts.json`.
 - Pas de routeur automatique : on inspecte nous-mêmes `$_SERVER['REQUEST_METHOD']` et `$_SERVER['REQUEST_URI']`, et on compare avec une expression régulière pour extraire l'identifiant dans `/contacts/3`.
-- Pas de validation de type automatique : on vérifie nous-mêmes que les champs obligatoires sont présents (`validateContactInput`).
+- Pas de validation de type automatique : on vérifie nous-mêmes les champs obligatoires et le format de l'email.
 - Pas de documentation générée : si vous en voulez une, il faudrait l'écrire à la main, ou utiliser un outil comme Swagger/OpenAPI séparément.
 
 C'est exactement le même contrat que la version FastAPI, avec beaucoup plus de code écrit à la main — c'est ce que vous "payez" en choisissant de ne pas utiliser de framework, et ce qu'un framework vous "offre" en échange d'apprendre ses conventions.
+
+## Sécurité et fonctionnalités avancées
+
+- `POST`/`PUT`/`DELETE` sur `/contacts` exigent l'en-tête `x-api-key: demo-secret-key-123` (constante `API_KEY` dans `index.php`).
+- `GET /contacts` accepte `?search=...` (filtrage) et `?page=...&limit=...` (pagination).
+- Pas de démo JWT côté PHP natif (nécessiterait une bibliothèque externe, ex. `firebase/php-jwt`) — voir la démo FastAPI (`../api-fastapi/v2.py`) et [`docs/06-pour-aller-plus-loin.md`](../docs/06-pour-aller-plus-loin.md).

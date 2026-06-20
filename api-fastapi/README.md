@@ -27,6 +27,16 @@ Voir [`docs/05-tester-avec-curl.md`](../docs/05-tester-avec-curl.md) pour des ex
 
 ## Comment c'est fait
 
-- `main.py` contient toute l'API : les modèles de données (`ContactIn`, `Contact`), les fonctions de lecture/écriture du fichier `contacts.json`, et les 5 endpoints (`GET`, `GET /:id`, `POST`, `PUT`, `DELETE`).
+- `main.py` contient l'API v1 : les modèles de données (`ContactIn`, `Contact`), et les 5 endpoints (`GET`, `GET /:id`, `POST`, `PUT`, `DELETE`).
+- `storage.py` contient la lecture/écriture de `contacts.json`, partagée par `main.py` et `v2.py`.
+- `v2.py` contient une démo de versionning + authentification JWT, montée sous `/v2` (voir [`docs/06-pour-aller-plus-loin.md`](../docs/06-pour-aller-plus-loin.md)).
 - FastAPI utilise les **annotations de type** Python (`contact_id: int`, `new_contact: ContactIn`) pour valider automatiquement les données reçues et générer la documentation interactive — c'est l'un des principaux atouts de ce framework par rapport à du PHP natif (comparez avec `../api-php/`).
 - Les données sont stockées dans `contacts.json`, réinitialisé à `[]` par défaut.
+
+## Sécurité et fonctionnalités avancées
+
+- `POST`/`PUT`/`DELETE` sur `/contacts` exigent l'en-tête `x-api-key: demo-secret-key-123` (variable d'environnement `API_KEY`).
+- `GET /contacts` accepte `?search=...` (filtrage) et `?page=...&limit=...` (pagination).
+- `/v2/contacts` exige un jeton JWT obtenu via `POST /v2/auth/login` (compte de démo `demo`/`demo123`), et renomme `phone` en `phoneNumber`.
+
+Détails et exemples `curl` : [`docs/06-pour-aller-plus-loin.md`](../docs/06-pour-aller-plus-loin.md).
